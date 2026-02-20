@@ -89,6 +89,15 @@ test_v4_in_v4-0  160.164.191.1/32          100.251.7.1
 """
         assert result.output == expected_output
 
+    def test_show_vnet_routes_name_basic(self):
+        runner = CliRunner()
+        db = Db()
+        
+        result = runner.invoke(show.cli.commands['vnet'].commands['routes'].commands['test_v4_in_v4-0'], obj=db)
+        assert result.exit_code == 0
+        expected_output = ""
+        assert result.output == expected_output
+
 class TestShowVnetAdvertisedRoutesIPX(object):
     @classmethod
     def setup_class(cls):

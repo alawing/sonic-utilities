@@ -544,3 +544,19 @@ def tunnel():
         table.append(r)
 
     click.echo(tabulate(table, header))
+
+@routes.command()
+@click.argument('vnet_name', required=True)
+def name(vnet_name):
+    """Show VNET details for a given VNET name"""
+    config_db = ConfigDBConnector()
+    config_db.connect()
+
+    vnet_data, interfaces = get_vnet_info(config_db, vnet_name)
+
+    if not vnet_data:
+        click.echo(f"VNET '{vnet_name}' not found!")
+        return
+
+    headers, table = format_vnet_output(vnet_name, vnet_data, interfaces)
+    click.echo(tabulate(table, headers=headers))
