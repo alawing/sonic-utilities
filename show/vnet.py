@@ -491,7 +491,7 @@ def all():
 
     click.echo()
 
-    header = ['vnet name', 'prefix', 'endpoint', 'mac address', 'vni', 'status']
+    header = ['vnet name', 'prefix', 'endpoint', 'mac address', 'vni', 'status', 'metric']
 
     # Fetching data from appl_db for VNET TUNNEL ROUTES
     vnet_rt_keys = appl_db.keys(appl_db.APPL_DB, "VNET_ROUTE_TUNNEL_TABLE:*")
@@ -511,6 +511,7 @@ def all():
             r.append(val.get('vni'))
             if val_state:
                 r.append(val_state.get('state'))
+            r.append(val.get('metric'))
             table.append(r)
             continue
         state = val_state.get('state') if val_state else ""
@@ -525,7 +526,7 @@ def tunnel():
     appl_db = SonicV2Connector()
     appl_db.connect(appl_db.APPL_DB)
 
-    header = ['vnet name', 'prefix', 'endpoint', 'mac address', 'vni']
+    header = ['vnet name', 'prefix', 'endpoint', 'mac address', 'vni', 'metric']
 
     # Fetching data from appl_db for VNET TUNNEL ROUTES
     vnet_rt_keys = appl_db.keys(appl_db.APPL_DB, "VNET_ROUTE_TUNNEL_TABLE:*")
@@ -539,6 +540,7 @@ def tunnel():
         r.append(val.get('endpoint'))
         r.append(val.get('mac_address'))
         r.append(val.get('vni'))
+        r.append(val.get('metric'))
         table.append(r)
 
     click.echo(tabulate(table, header))
