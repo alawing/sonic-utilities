@@ -95,7 +95,16 @@ test_v4_in_v4-0  160.164.191.1/32          100.251.7.1
         
         result = runner.invoke(show.cli.commands['vnet'].commands['routes'].commands['name'], ['test_v4_in_v4-0'], obj=db)
         assert result.exit_code == 0
-        expected_output = ""
+        expected_output = """\
+vnet name    prefix    nexthop    interface
+-----------  --------  ---------  -----------
+
+vnet name        prefix            endpoint     mac address    vni    status      metric
+---------------  ----------------  -----------  -------------  -----  --------  --------
+test_v4_in_v4-0  160.162.191.1/32  100.251.7.1                        active
+test_v4_in_v4-0  160.163.191.1/32  100.251.7.1                        active           0
+test_v4_in_v4-0  160.164.191.1/32  100.251.7.1
+"""
         assert result.output == expected_output
 
 class TestShowVnetAdvertisedRoutesIPX(object):
