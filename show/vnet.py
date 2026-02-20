@@ -465,9 +465,64 @@ def pretty_print(table, r, epval, mac_addr, vni, state):
         table.append(r)
         r = ["",""]
 
-@vnet.command()
+@routes.command()
+def all():
+    """Show all vnet routes"""
+    appl_db = SonicV2Connector()
+    appl_db.connect(appl_db.APPL_DB)
+    state_db = SonicV2Connector()
+    state_db.connect(state_db.STATE_DB)
+    header = ['vnet name', 'prefix', 'nexthop', 'interface']
+
+    # Fetching data from appl_db for VNET ROUTES
+    vnet_rt_keys = appl_db.keys(appl_db.APPL_DB, "VNET_ROUTE_TABLE:*")
+    vnet_rt_keys = natsorted(vnet_rt_keys) if vnet_rt_keys else []
+
+    table = []
+    for k in vnet_rt_keys:
+        r = []
+        r.extend(k.split(":", 2)[1:])
+        val = appl_db.get_all(appl_db.APPL_DB, k)
+        r.append(val.get('nexthop'))
+        r.append(val.get('ifname'))
+        table.append(r)
+
+    click.echo(tabulate(table, header))
+
+    click.echo()
+
+    header = ['vnet name', 'prefix', 'endpoint', 'mac address', 'vni', 'status', 'metric']
+
+    # Fetching data from appl_db for VNET TUNNEL ROUTES
+    vnet_rt_keys = appl_db.keys(appl_db.APPL_DB, "VNET_ROUTE_TUNNEL_TABLE:*")
+    vnet_rt_keys = natsorted(vnet_rt_keys) if vnet_rt_keys else []
+
+    table = []
+    for k in vnet_rt_keys:
+        r = []
+        r.extend(k.split(":", 2)[1:])
+        state_db_key = '|'.join(k.split(":",2))
+        val = appl_db.get_all(appl_db.APPL_DB, k)
+        val_state = state_db.get_all(state_db.STATE_DB, state_db_key)
+        epval = val.get('endpoint')
+        if len(epval) < 40:
+            r.append(epval)
+            r.append(val.get('mac_address'))
+            r.append(val.get('vni'))
+            if val_state:
+                r.append(val_state.get('state'))
+            r.append(val.get('metric'))
+            table.append(r)
+            continue
+        state = val_state.get('state') if val_state else ""
+        pretty_print(table, r, epval, val.get('mac_address'), val.get('vni'), state )
+
+    click.echo(tabulate(table, header))
+
+
+@routes.command()
 @click.argument('vnet_name', required=False)
-def routes(vnet_name):
+def name(vnet_name):
     """Show vnet routes for a given VNET name"""
     appl_db = SonicV2Connector()
     appl_db.connect(appl_db.APPL_DB)
@@ -508,60 +563,6 @@ def routes(vnet_name):
         val = appl_db.get_all(appl_db.APPL_DB, k)
         if vnet_name and k.split(":")[1] != vnet_name:
             continue
-        val_state = state_db.get_all(state_db.STATE_DB, state_db_key)
-        epval = val.get('endpoint')
-        if len(epval) < 40:
-            r.append(epval)
-            r.append(val.get('mac_address'))
-            r.append(val.get('vni'))
-            if val_state:
-                r.append(val_state.get('state'))
-            r.append(val.get('metric'))
-            table.append(r)
-            continue
-        state = val_state.get('state') if val_state else ""
-        pretty_print(table, r, epval, val.get('mac_address'), val.get('vni'), state )
-
-    click.echo(tabulate(table, header))
-
-@routes.command()
-def all():
-    """Show all vnet routes"""
-    appl_db = SonicV2Connector()
-    appl_db.connect(appl_db.APPL_DB)
-    state_db = SonicV2Connector()
-    state_db.connect(state_db.STATE_DB)
-    header = ['vnet name', 'prefix', 'nexthop', 'interface']
-
-    # Fetching data from appl_db for VNET ROUTES
-    vnet_rt_keys = appl_db.keys(appl_db.APPL_DB, "VNET_ROUTE_TABLE:*")
-    vnet_rt_keys = natsorted(vnet_rt_keys) if vnet_rt_keys else []
-
-    table = []
-    for k in vnet_rt_keys:
-        r = []
-        r.extend(k.split(":", 2)[1:])
-        val = appl_db.get_all(appl_db.APPL_DB, k)
-        r.append(val.get('nexthop'))
-        r.append(val.get('ifname'))
-        table.append(r)
-
-    click.echo(tabulate(table, header))
-
-    click.echo()
-
-    header = ['vnet name', 'prefix', 'endpoint', 'mac address', 'vni', 'status', 'metric']
-
-    # Fetching data from appl_db for VNET TUNNEL ROUTES
-    vnet_rt_keys = appl_db.keys(appl_db.APPL_DB, "VNET_ROUTE_TUNNEL_TABLE:*")
-    vnet_rt_keys = natsorted(vnet_rt_keys) if vnet_rt_keys else []
-
-    table = []
-    for k in vnet_rt_keys:
-        r = []
-        r.extend(k.split(":", 2)[1:])
-        state_db_key = '|'.join(k.split(":",2))
-        val = appl_db.get_all(appl_db.APPL_DB, k)
         val_state = state_db.get_all(state_db.STATE_DB, state_db_key)
         epval = val.get('endpoint')
         if len(epval) < 40:
