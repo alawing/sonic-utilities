@@ -647,6 +647,7 @@ def local(vnet_name):
 
         click.echo(tabulate(table, route_header))
 
+
 @routes.command()
 @click.argument('vnet_name', required=False)
 def tunnel(vnet_name):
