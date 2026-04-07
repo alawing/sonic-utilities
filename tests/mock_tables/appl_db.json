@@ -383,6 +383,10 @@
         "nexthop": "100.102.4.1, 100.102.4.2, 100.102.4.3",
         "ifname": "Ethernet1, Ethernet2, Ethernet3"
     },
+    "VNET_ROUTE_TABLE:test_v4_in_v4-1:160.165.191.1/32": {
+        "nexthop": "100.103.4.1, 100.103.4.2, 100.103.4.3",
+        "ifname": "Ethernet1, Ethernet2, Ethernet3"
+    },
     "VNET_ROUTE_TUNNEL_TABLE:test_v4_in_v4-0:160.163.191.1/32": {
         "endpoint":"100.251.7.1",
         "endpoint_monitor":"100.251.7.1",

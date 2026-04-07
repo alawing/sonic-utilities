@@ -65,6 +65,7 @@ vnet name        prefix            nexthop                                interf
 test_v4_in_v4-0  160.162.191.1/32  100.100.4.1                            Ethernet1
 test_v4_in_v4-0  160.163.191.1/32  100.101.4.1, 100.101.4.2               Ethernet1, Ethernet2
 test_v4_in_v4-0  160.164.191.1/32  100.102.4.1, 100.102.4.2, 100.102.4.3  Ethernet1, Ethernet2, Ethernet3
+test_v4_in_v4-1  160.165.191.1/32  100.103.4.1, 100.103.4.2, 100.103.4.3  Ethernet1, Ethernet2, Ethernet3
 
 vnet name        prefix                    endpoint                                     mac address    vni    status      metric
 ---------------  ------------------------  -------------------------------------------  -------------  -----  --------  --------
@@ -88,6 +89,7 @@ vnet name        prefix            nexthop                                interf
 test_v4_in_v4-0  160.162.191.1/32  100.100.4.1                            Ethernet1
 test_v4_in_v4-0  160.163.191.1/32  100.101.4.1, 100.101.4.2               Ethernet1, Ethernet2
 test_v4_in_v4-0  160.164.191.1/32  100.102.4.1, 100.102.4.2, 100.102.4.3  Ethernet1, Ethernet2, Ethernet3
+test_v4_in_v4-1  160.165.191.1/32  100.103.4.1, 100.103.4.2, 100.103.4.3  Ethernet1, Ethernet2, Ethernet3
 
 vnet name        prefix            endpoint     mac address    vni    status      metric
 ---------------  ----------------  -----------  -------------  -----  --------  --------
@@ -119,12 +121,13 @@ test_v4_in_v4-0  160.164.191.1/32          100.251.7.1
         
         result = runner.invoke(show.cli.commands['vnet'].commands['routes'].commands['local'], [], obj=db)
         assert result.exit_code == 0
-        expected_output = """
+        expected_output = """\
 vnet name        prefix            nexthop                                interface
 ---------------  ----------------  -------------------------------------  -------------------------------
 test_v4_in_v4-0  160.162.191.1/32  100.100.4.1                            Ethernet1
 test_v4_in_v4-0  160.163.191.1/32  100.101.4.1, 100.101.4.2               Ethernet1, Ethernet2
 test_v4_in_v4-0  160.164.191.1/32  100.102.4.1, 100.102.4.2, 100.102.4.3  Ethernet1, Ethernet2, Ethernet3
+test_v4_in_v4-1  160.165.191.1/32  100.103.4.1, 100.103.4.2, 100.103.4.3  Ethernet1, Ethernet2, Ethernet3
 """
         assert result.output == expected_output
 
