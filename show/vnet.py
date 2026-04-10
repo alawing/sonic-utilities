@@ -472,10 +472,6 @@ def pretty_print(table, r, epval, mac_addr, vni, metric, state):
 def all(vnet_name):
     """Show all vnet routes"""
 
-    # Fetching data from appl_db for VNET ROUTES
-    vnet_rt_keys = appl_db.keys(appl_db.APPL_DB, "VNET_ROUTE_TABLE:*")
-    vnet_rt_keys = natsorted(vnet_rt_keys) if vnet_rt_keys else []
-
     appl_db = SonicV2Connector()
     state_db = SonicV2Connector()
 
@@ -488,10 +484,6 @@ def all(vnet_name):
 @click.argument('vnet_name', required=False)
 def local(vnet_name):
     """Show local vnet routes"""
-
-    # Fetching data from appl_db for VNET TUNNEL ROUTES
-    vnet_rt_keys = appl_db.keys(appl_db.APPL_DB, "VNET_ROUTE_TUNNEL_TABLE:*")
-    vnet_rt_keys = natsorted(vnet_rt_keys) if vnet_rt_keys else []
 
     appl_db = SonicV2Connector()
 
