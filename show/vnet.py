@@ -525,6 +525,7 @@ def routes():
     """Show vnet routes related information"""
     pass
 
+
 def pretty_print(table, r, epval, mac_addr, vni, metric, state):
     endpoints = epval.split(',')
     row_width = 3
