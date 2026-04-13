@@ -13788,9 +13788,9 @@ This command displays vnet neighbor information about all the vnets configured i
                30.30.30.30  11:22:33:44:55:66  Ethernet0.1002
   ```
 
-**show vnet routes all <vnet_name>**
+**show vnet routes all [<vnet_name>]**
 
-This command displays either all routes information about all the vnets or a specified vnet configured in the device. It also show the vnet routes which are configured but may or may not be active based on endpoint BFD status.
+This command displays either all routes information about all the vnets or a specified vnet configured in the device. It also shows the vnet routes which are configured but may or may not be active based on endpoint BFD status.
 
 - Usage:
 
@@ -13807,14 +13807,14 @@ This command displays either all routes information about all the vnets or a spe
   Vnet_2000    100.100.3.0/24             Ethernet52
   Vnet_3000    100.100.4.0/24             Vlan2000
 
-  vnet name    prefix          endpoint    mac address        vni    status
-  -----------  --------------  ----------  -----------------  -----  -------
-  Vnet_2000    100.100.1.1/32  10.10.10.1                            active
-  Vnet_3000    100.100.2.1/32  10.10.10.2  00:00:00:00:03:04         inactive
+  vnet name    prefix          endpoint    mac address        vni      metric  status
+  -----------  --------------  ----------  -----------------  -----  --------  --------
+  Vnet_2000    100.100.1.1/32  10.10.10.1                                   0  active
+  Vnet_3000    100.100.2.1/32  10.10.10.2  00:00:00:00:03:04                   inactive
   Vnet_3000    100.100.2.3/32  10.10.10.6  00:00:00:00:03:04
   ```
 
-**show vnet routes local <vnet_name>**
+**show vnet routes local [<vnet_name>]**
 
 This command displays either local routes information about all the vnets or a specified vnet configured in the device.
 
@@ -13834,7 +13834,7 @@ This command displays either local routes information about all the vnets or a s
   Vnet_3000    100.100.4.0/24             Vlan2000
   ```
 
-**show vnet routes tunnel <vnet_name>**
+**show vnet routes tunnel [<vnet_name>]**
 
 This command displays tunnel routes information about all the vnets or a specified vnet configured in the device.
 
@@ -13848,10 +13848,11 @@ This command displays tunnel routes information about all the vnets or a specifi
 
   ```
   admin@sonic:~$ show vnet routes tunnel
-  vnet name    prefix          endpoint    mac address        vni
-  -----------  --------------  ----------  -----------------  -----
-  Vnet_2000    100.100.1.1/32  10.10.10.1
-  Vnet_3000    100.100.2.1/32  10.10.10.2  00:00:00:00:03:04
+  vnet name    prefix          endpoint    mac address        vni      metric  status
+  -----------  --------------  ----------  -----------------  -----  --------  --------
+  Vnet_2000    100.100.1.1/32  10.10.10.1                                   0  active
+  Vnet_3000    100.100.2.1/32  10.10.10.2  00:00:00:00:03:04                   inactive
+  Vnet_3000    100.100.2.3/32  10.10.10.6  00:00:00:00:03:04
   ```
 
 **Additional show vnet commands**
