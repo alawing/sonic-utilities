@@ -527,7 +527,9 @@ def routes():
 
 
 def pretty_print(table, r, epval, mac_addr, vni, metric, state):
-    endpoints = epval.split(',')
+    endpoints = epval.split(',') if epval else []
+    if not endpoints:
+        endpoints = [""]
     # When mac_address or vni is a per-endpoint list, split so all three fields
     # wrap in the same chunks — keeps rows aligned at any ECMP scale.
     macs = mac_addr.split(',') if mac_addr and ',' in mac_addr else None
